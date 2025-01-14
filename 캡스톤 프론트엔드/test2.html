@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .scroll-section {
+      opacity: 0;
+      transform: translateY(70px);
+      transition: all 1s ease;
+      margin: 200px 0;
+      padding: 40px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .scroll-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .text-content {
+      max-width: 50%;
+    }
+
+    .text-content h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .text-content p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .text-content p.highlight {
+      font-size: 24px;
+      font-weight: bold;
+      color: #007AFF;
+    }
+
+    .image-container {
+      max-width: 40%;
+      text-align: center;
+    }
+
+    .image-container img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(45deg, #4a90e2, #50e3c2);
+      color: white;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div>
+      <h1>해양 안전 솔루션</h1>
+      <p>이안류 탐지와 인명 구조를 위한 혁신 프로젝트</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="scroll-section">
+      <div class="text-content">
+        <h2>1. Unreal Engine을 활용한 파도 시뮬레이션</h2>
+        <p>Unreal Engine으로 실제 해변 지형과 파도를 시뮬레이션하여 딥러닝을 훈련시킵니다. 이를 통해 이안류를 정확히 탐지할 수 있는 AI 모델을 개발합니다.</p>
+      </div>
+      <div class="image-container">
+        <img src="images/unreal-engine-wave.png" alt="Unreal Engine Waves">
+      </div>
+    </div>
+
+    <div class="scroll-section">
+      <div class="text-content">
+        <h2>2. 딥러닝 기반 이안류 탐지</h2>
+        <p>파도 시뮬레이션 데이터를 활용하여 이안류 탐지 알고리즘을 훈련합니다. AI는 이안류 발생 가능성을 예측하고 위험 지역을 식별합니다.</p>
+      </div>
+      <div class="image-container">
+        <img src="images/deep-learning-analysis.png" alt="Deep Learning Analysis">
+      </div>
+    </div>
+
+    <div class="scroll-section">
+      <div class="text-content">
+        <h2>3. 드론을 활용한 상공 탐지</h2>
+        <p>드론을 통해 해변 상공에서 바다의 상태를 실시간으로 모니터링합니다. 이안류가 발생하면 드론은 위험 지역을 식별하고 경고를 전송합니다.</p>
+      </div>
+      <div class="image-container">
+        <img src="images/drone-monitoring.png" alt="Drone Monitoring">
+      </div>
+    </div>
+
+    <div class="scroll-section">
+      <div class="text-content">
+        <h2>4. 인명 구조 로봇</h2>
+        <p>위험 지역에서 사람이 물에 빠진 경우, 구조 로봇이 투입되어 신속하게 구조 작업을 수행합니다. 이를 통해 해양 사고를 예방하고 인명을 구합니다.</p>
+      </div>
+      <div class="image-container">
+        <img src="images/rescue-robot.png" alt="Rescue Robot">
+      </div>
+    </div>
+
+    <div class="scroll-section">
+      <div class="text-content">
+        <h2>5. 통합 해양 정보 제공</h2>
+        <p>실시간 CCTV 영상, 드론 데이터, 기상 정보 및 이안류 발생 예측을 한눈에 볼 수 있는 플랫폼을 제공합니다. 이를 통해 해변객들이 안전하게 해양을 즐길 수 있습니다.</p>
+      </div>
+      <div class="image-container">
+        <img src="images/ocean-info-platform.png" alt="Ocean Info Platform">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    const scrollSections = document.querySelectorAll('.scroll-section');
+    scrollSections.forEach((section, index) => {
+      setTimeout(() => {
+        sectionObserver.observe(section);
+      }, index * 300); // Each section will start observing with a delay
+    });
+  </script>
+</body>
+</html>

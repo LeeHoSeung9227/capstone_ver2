@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- HLS.js 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- 기존 스타일 유지 -->
+    <style>
+        /* 기존 스타일 코드 유지 */
+        
+        /* 비디오 플레이어 스타일 추가 */
+        .video-section video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #000;
+        }
+        
+        .video-section.streaming {
+            aspect-ratio: 16/9;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 스트리밍 상태 표시 */
+        .stream-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 기존 header와 sidebar 코드 유지 -->
+    
+    <!-- Main Content 섹션 수정 -->
+    <div class="main">
+        <section class="main-section">
+            <div class="video-section">
+                <img id="main-image" src="images/해수욕장 관리자-최금지.png" alt="Default Image" class="active">
+                <video id="stream-video" controls autoplay class="stream-player"></video>
+                <div class="stream-status" id="streamStatus" style="display: none;">LIVE</div>
+                <div class="info">
+                    <h2>최금지</h2>
+                    <p>#CCTV #드론 #분석</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Button Section -->
+        <section class="button">
+            <div class="button-section">
+                <div class="button-card" onclick="startStreaming()">
+                    <img src="images/cctv.png" alt="CCTV Icon">
+                    <div>
+                        <h3>CCTV 영상</h3>
+                        <p>실시간 CCTV 영상입니다.</p>
+                    </div>
+                </div>
+                <!-- 나머지 버튼들 유지 -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let hls = null;
+        
+        function startStreaming() {
+            const videoElement = document.getElementById('stream-video');
+            const imageElement = document.getElementById('main-image');
+            const streamStatus = document.getElementById('streamStatus');
+            
+            // 이미지 숨기고 비디오 표시
+            imageElement.classList.remove('active');
+            videoElement.classList.add('active');
+            streamStatus.style.display = 'block';
+            
+            // HLS 스트리밍 시작
+            if (Hls.isSupported()) {
+                if (hls) {
+                    hls.destroy();
+                }
+                hls = new Hls();
+                hls.loadSource('http://172.27.103.229:8080/hls/fucking.m3u8'); // HLS 스트림 주소
+                hls.attachMedia(videoElement);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    videoElement.play()
+                        .catch(function(error) {
+                            console.log("Play failed:", error);
+                        });
+                });
+                
+                // 에러 핸들링
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        switch(data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                console.log("네트워크 에러, 재연결 시도중...");
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                console.log("미디어 에러, 복구 시도중...");
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                console.log("치명적인 에러, 스트리밍을 중단합니다.");
+                                hls.destroy();
+                                break;
+                        }
+                    }
+                });
+            } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+                // Safari 및 iOS 기기를 위한 네이티브 HLS 지원
+                videoElement.src = 'http://172.27.103.229:8080/hls/fucking.m3u8';
+                videoElement.addEventListener('loadedmetadata', function() {
+                    videoElement.play()
+                        .catch(function(error) {
+                            console.log("Play failed:", error);
+                        });
+                });
+            }
+        }
+
+        // 사이드바 토글 함수 유지
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

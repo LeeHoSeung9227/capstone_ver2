@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자</title>
+    <style>
+        body {
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #0b2b50, #8dc3f8); /* 파란색 계열 그라데이션 */
+        min-width: 100px; /* 최소 너비 */
+        width: 100%; /* 화면 크기 따라 확장 */    
+        overflow-x: auto; /* 바디에 가로 스크롤 추가 */   
+        overflow-y: auto; /* 바디에 가로 스크롤 추가 */ 
+        }
+
+/*container 섹션*/
+        .container {
+            width:1300px;
+            margin: 70px 20%;
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+/*메인사진 섹션*/
+        .profile-card {
+            flex: 1;
+            min-width: 600px;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .profile-card img, .profile-card video {
+            width: 100%;
+            height: 600px;
+            display: none;
+            object-fit: cover;
+        }
+        .profile-card img.active, .profile-card video.active {
+            display: block;
+        }
+        .profile-card .info {
+            padding: 15px;
+        }
+        .profile-card .info h2 {
+            margin: 10px 0;
+            font-size: 22px;
+        }
+        .profile-card .info p {
+            margin: 5px 0;
+            color: #555;
+        }
+/*영상 섹션*/
+        .videos {
+            flex: 2;
+            min-width: 300px;
+        }
+        .video-item {
+            padding: 40px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .video-item:last-child {
+            border-bottom: none;
+        }
+        .video-item:hover {
+            background-color: #f0f8ff;
+        }
+        .video-item h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .video-item p {
+            margin: 5px 0 0;
+            color: #555;
+            font-size: 14px;
+        }
+        .video-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .video-item-details {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        .tm-site-header {
+     
+    padding: 20px;
+    position: relative; /* ::after를 위치시키기 위한 설정 */
+        }
+        .tm-site-header::after {
+    content: "";
+    display: block;
+    width: 100%; /* 선의 너비 */
+    height: 2px; /* 선의 두께 */
+    background-color: rgba(255, 255, 255, 0.6); /* 선 색상 및 투명도 */
+    margin-top: 10px; /* 헤더와 선 사이 간격 */
+    position: absolute;
+    bottom: -10px; /* 헤더 아래에 위치 */
+    left: 0;
+}
+        
+        
+
+/* 사이드바 항목 스타일 */
+        .sidebar {
+            position: fixed;
+            left: 10%;
+            top: 207px;
+            width: 150px;
+            height: 720px;
+            background-color: #f8f9fa;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: auto;
+            gap: 15px;
+            overflow-x: auto;
+        }
+        .sidebar a {
+            text-align: center;
+            text-decoration: none; /* 링크 밑줄 제거 */
+            color: #333; /* 기본 텍스트 색상 */
+            font-size: 0.7em;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px; /* 텍스트와 이미지 간 간격 */
+        }
+        .sidebar a:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar img {
+            width: 70px; /* 이미지 크기 */
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #f1e1f6;
+            padding: 10px; /* 이미지 내부 패딩 */
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .sidebar img:hover {
+            transform: scale(1.1); /* 호버 시 확대 효과 */
+            background-color: #d6d6f9; /* 호버 시 배경색 변경 */
+        }
+
+        .sidebar h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #555; /* 텍스트 색상 */
+            transition: color 0.3s;
+        }
+
+        .sidebar h3:hover {
+            color: #3498db; /* 호버 시 텍스트 색상 변경 */
+        }
+        .h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+        .logo-container-horizontal {
+    display: flex;
+    align-items: center; /* 이미지와 텍스트를 수직 정렬 */
+    gap: 20px; /* 이미지와 텍스트 간 간격 */
+
+ 
+
+    
+}
+
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden; /* 이미지가 원 밖으로 넘치지 않도록 설정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* 이미지 크기 고정 */
+}
+
+.logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 비율 유지 */
+}
+
+.text-container {
+    display: flex;
+    justify-content: space-between; /* 두 세트를 좌우로 정렬 */
+    align-items: center; /* 텍스트 높이 일치 */
+    gap: 20px;
+}
+
+.coin-set, .project-set {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 세트 내 텍스트 정렬 */
+    text-align: center;
+}
+
+.coin-set h1 {
+    font-size: 35px;
+    margin: 0;
+    color: white;
+}
+
+.coin-set .sub-text {
+    font-size: 10px;
+    margin: 5px 0 0;
+    color: white;
+}
+
+.project-set p {
+    font-size: 15px;
+    margin: 5px 0;
+    color: white;
+}
+    
+.divider {
+    width: 2px; /* 선 두께 */
+    height: 60px; /* 선 높이를 고정 */
+    background-color: #ffffff; /* 선 색상 */
+    opacity: 0.3; /* 약간의 투명도 */
+}
+    </style>
+</head>
+<body>
+    <li><a href="Aboutus.html" target="_blank">
+        <header class="tm-site-header">
+            <div class="logo-container-horizontal">
+                <div class="logo-circle">
+                    <a href="index.html" target="_blank">
+                    <img src="images/About us.png" alt="Logo" class="logo-image" >
+                </a>
+                </div>
+                <div class="text-container">
+                    <div class="coin-set">
+                        <h1>COIN</h1>
+                        <p class="sub-text">coastal innovation</p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="project-set">
+                        <p>해양융합공학과</p>
+                        <p>캡스톤프로젝트</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+  
+    
+    <div class="sidebar">
+        <a href="환경운동가.html">
+            <img src="images/환경 보호 활동가-김환경.png">
+            <h3>환경운동가</h3>
+        </a>
+        <a href="어촌주민.html">
+            <img src="images/어촌주민-박어부.png">
+            <h3>어촌주민</h3>
+        </a>
+        <a href="관리자.html">
+            <img src="images/해수욕장 관리자-최금지.png">
+            <h3>해수욕장 관리자</h3>
+        </a>
+        <a href="안전요원.html">
+            <img src="images/해수욕장 안전요원-계조심.png">
+            <h3>해수욕장 안전요원</h3>
+        </a>
+        <a href="이용객.html">
+            <img src="images/해수욕장 이용객-강바다.png">
+            <h3>해수욕장 이용객</h3>
+        </a>
+        <a href="스포츠애호가.html">
+            <img src="images/해양스포츠 애호가-장서핑.png">
+            <h3>해양스포츠 애호가</h3>
+        </a>
+        <a href="Aboutus.html">
+            <img src="images/About Us.png" >
+            <h3>About Us</h3>
+        </a>
+    </div>
+    <div class="container">
+        <div class="profile-card">
+            <img id="main-image" src="images/해수욕장 관리자-최금지.png" alt="Default Image" class="active">
+            <video id="main-video" controls>
+                <source src="" type="video/mp4">
+                Your browser does not support HTML video.
+            </video>
+            <div class="info">
+                <h2>최금지</h2>
+                <p>#CCTV #드론 #분석</p>
+            </div>
+        </div>
+        <div class="videos">
+            <div class="video-item" onclick="showVideo('https://www.w3schools.com/html/mov_bbb.mp4')">
+                <img src="images/cctv.png" alt="CCTV">
+                <div class="video-item-details">
+                    <h3>CCTV 영상</h3>
+                    <p>실시간 CCTV 영상입니다.</p>
+                </div>
+            </div>
+            <div class="video-item" onclick="showVideo('https://www.w3schools.com/html/movie.mp4')">
+                <img src="images/드론.png" alt="Drone">
+                <div class="video-item-details">
+                    <h3>드론 영상</h3>
+                    <p>드론 촬영 영상입니다.</p>
+                </div>
+            </div>
+            <div class="video-item" onclick="showVideo('https://www.w3schools.com/html/mov_bbb.mp4')">
+                <img src="images/분석.png" alt="Analysis">
+                <div class="video-item-details">
+                    <h3>분석 영상</h3>
+                    <p>분석 결과 영상입니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showVideo(videoUrl) {
+            const imageElement = document.getElementById('main-image');
+            const videoElement = document.getElementById('main-video');
+
+            // Switch from image to video
+            imageElement.classList.remove('active');
+            videoElement.classList.add('active');
+            
+            // Set video source and play
+            videoElement.src = videoUrl;
+            videoElement.play();
+        }
+    </script>
+</body>
+</html>
